@@ -34,6 +34,8 @@ void displayPlayerStats(const Player& player) {
 // Function demonstrating unique_ptr usage
 std::unique_ptr<Enemy> createEnemy(EnemyType type, int level) {
     switch(type) {
+        case EnemyType::SLIME:
+            return std::make_unique<Slime>(level);
         case EnemyType::GOBLIN:
             return std::make_unique<Goblin>(level);
         case EnemyType::ORC:
@@ -71,7 +73,7 @@ void gameLoop() {
     
     // Random number generator
     std::mt19937 rng(static_cast<unsigned int>(time(nullptr)));
-    std::uniform_int_distribution<int> enemyDist(0, 2);
+    std::uniform_int_distribution<int> enemyDist(0, 3);
     std::uniform_int_distribution<int> actionDist(1, 100);
     
     while (state != GameState::GAME_OVER) {

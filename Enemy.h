@@ -8,6 +8,7 @@ namespace GameCore {
 
 // Enum for enemy types
 enum class EnemyType {
+    SLIME,
     GOBLIN,
     ORC,
     DRAGON
@@ -55,6 +56,16 @@ public:
     
     // Factory method pattern
     static std::unique_ptr<Enemy> createEnemy(EnemyType type, int level);
+};
+
+// Derived class: Slime
+class Slime : public Enemy {
+public:
+    explicit Slime(int level);
+
+    void specialAbility() override;
+
+    void display() const override;
 };
 
 // Derived class: Goblin

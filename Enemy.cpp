@@ -31,6 +31,8 @@ void Enemy::takeDamage(int damage) {
 // Factory method implementation
 std::unique_ptr<Enemy> Enemy::createEnemy(EnemyType type, int level) {
     switch(type) {
+        case EnemyType::SLIME:
+            return std::make_unique<Slime>(level);
         case EnemyType::GOBLIN:
             return std::make_unique<Goblin>(level);
         case EnemyType::ORC:
@@ -41,6 +43,32 @@ std::unique_ptr<Enemy> Enemy::createEnemy(EnemyType type, int level) {
             return std::make_unique<Goblin>(level);
     }
 }
+
+// Slime implementation
+Slime::Slime(int level)
+    : Enemy("Slime", 20 + (level * 10) , 7 + (level * 3), 2 + level * 0.66, level, 25 + (level * 5)) {
+}
+
+void Slime::specialAbility() {
+    GameUtils::Console::setColor(GameUtils::ConsoleColor::BOLD_CYAN);
+    std::cout << "The Slime uses his useless ability, which does nothing!" << std::endl;
+    GameUtils::Console::resetColor();
+}
+
+void Slime::display() const {
+    GameUtils::Console::setColor(GameUtils::ConsoleColor::GREEN);
+    std::cout << "       _____       " << std::endl;
+    std::cout << "    .-'     '-.    " << std::endl;
+    std::cout << "  .'  o     o  '.  " << std::endl;
+    std::cout << " /      ^       \\ " << std::endl;
+    std::cout << "|    \\_____/    | " << std::endl;
+    std::cout << " \\             / " << std::endl;
+    std::cout << "  '.         .'  " << std::endl;
+    std::cout << "    '-.___.-'    " << std::endl;
+    GameUtils::Console::resetColor();
+    Enemy::display();
+}
+
 
 // Goblin implementation
 Goblin::Goblin(int level)
