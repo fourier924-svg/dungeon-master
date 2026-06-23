@@ -18,10 +18,9 @@ private:
     int defense;
     int level;
     int xp;
-    int xpToNextLevel;
-    
-    // Inventory using shared_ptr for shared ownership
+    int xpToNextLevel;    // Inventory using shared_ptr for shared ownership
     std::vector<std::shared_ptr<Item>> inventory;
+    GameCore::Weapon* equippedWeapon;
     
     // Private helper function for leveling up
     void levelUp();
@@ -55,11 +54,13 @@ public:
     int getXP() const { return xp; }
     int getXPToNextLevel() const { return xpToNextLevel; }
     size_t getInventorySize() const { return inventory.size(); }
+    GameCore::Weapon getWeapon() const {return equippedWeapon ? *equippedWeapon : GameCore::Weapon("Fists", 0, GameCore::WeaponType::SWORD); }
     
     // Setters
     void setHP(int newHP) { hp = std::min(newHP, maxHP); }
     void setAttack(int newAttack) { attack = newAttack; }
     void setDefense(int newDefense) { defense = newDefense; }
+    void setEquippedWeapon(GameCore::Weapon* weapon) { equippedWeapon = weapon; }
     
     // Action methods
     void takeDamage(int damage);
@@ -70,6 +71,7 @@ public:
     void addItem(std::shared_ptr<Item> item);
     void useItem(size_t index);
     void displayInventory() const;
+    void displayEquipment() const;
     
     // Operator overloading
     bool operator==(const Player& other) const;

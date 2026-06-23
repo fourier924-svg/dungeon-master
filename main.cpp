@@ -59,7 +59,7 @@ void gameLoop() {
     std::cin.ignore();
     
     // Create player using unique_ptr
-    auto player = std::make_unique<Player>("Hero", 120, 20, 8);
+    auto player = std::make_unique<Player>("Hero", 100, 15, 5);
     
     // Give player starting items using shared_ptr
     auto healthPotion = std::make_shared<HealthPotion>("Health Potion", 30);
@@ -86,6 +86,7 @@ void gameLoop() {
                 Console::resetColor();
                 
                 displayPlayerStats(*player);
+                player->displayEquipment();
                 
                 std::cout << "\nWhat do you want to do?" << std::endl;
                 std::cout << "1. Continue exploring" << std::endl;
