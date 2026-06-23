@@ -15,6 +15,7 @@ void HealthPotion::use(Player& player) {
 // Weapon implementation
 void Weapon::use(Player& player) {
     player.setAttack(player.getAttack() + attackBonus);
+    player.setEquippedWeapon(this);
     std::cout << "Equipped " << name << "! Attack increased by " << attackBonus << "!" << std::endl;
 }
 

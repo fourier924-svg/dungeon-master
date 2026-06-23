@@ -8,7 +8,7 @@ namespace GameCore {
 // Constructor with member initializer list
 Player::Player(const std::string& name, int hp, int attack, int defense)
     : name(name), hp(hp), maxHP(hp), attack(attack), defense(defense),
-      level(1), xp(0), xpToNextLevel(100) {
+      level(1), xp(0), xpToNextLevel(100) , equippedWeapon(nullptr){
 }
 
 // Copy constructor
@@ -16,7 +16,7 @@ Player::Player(const Player& other)
     : name(other.name), hp(other.hp), maxHP(other.maxHP),
       attack(other.attack), defense(other.defense), level(other.level),
       xp(other.xp), xpToNextLevel(other.xpToNextLevel),
-      inventory(other.inventory) {
+      inventory(other.inventory) , equippedWeapon(other.equippedWeapon){
 }
 
 // Copy assignment operator
@@ -31,6 +31,7 @@ Player& Player::operator=(const Player& other) {
         xp = other.xp;
         xpToNextLevel = other.xpToNextLevel;
         inventory = other.inventory;
+        equippedWeapon = other.equippedWeapon;
     }
     return *this;
 }
@@ -40,7 +41,7 @@ Player::Player(Player&& other) noexcept
     : name(std::move(other.name)), hp(other.hp), maxHP(other.maxHP),
       attack(other.attack), defense(other.defense), level(other.level),
       xp(other.xp), xpToNextLevel(other.xpToNextLevel),
-      inventory(std::move(other.inventory)) {
+      inventory(std::move(other.inventory)) , equippedWeapon(std::move(other.equippedWeapon)) {
     other.hp = 0;
     other.maxHP = 0;
     other.attack = 0;
@@ -62,6 +63,7 @@ Player& Player::operator=(Player&& other) noexcept {
         xp = other.xp;
         xpToNextLevel = other.xpToNextLevel;
         inventory = std::move(other.inventory);
+        equippedWeapon = std::move(other.equippedWeapon);
         
         other.hp = 0;
         other.maxHP = 0;
@@ -136,7 +138,9 @@ void Player::useItem(size_t index) {
     }
     
     auto item = inventory[index];
+    std::cout << "Before use - Attack: " << attack << ", Defense: " << defense << std::endl;
     item->use(*this);
+    std::cout << "After use - Attack: " << attack << ", Defense: " << defense << std::endl;
     
     // Remove consumable items after use
     if (item->isConsumable()) {
@@ -160,6 +164,20 @@ void Player::displayInventory() const {
             std::cout << "   " << inventory[i]->getDescription() << std::endl;
         }
     }
+    GameUtils::Console::resetColor();
+}
+
+void Player::displayEquipment() const {
+    GameUtils::Console::setColor(GameUtils::ConsoleColor::MAGENTA);
+    std::cout << "\n=== EQUIPMENT ===" << std::endl;
+
+    if (equippedWeapon) {
+        std::cout << "Weapon: " << equippedWeapon->getName() << std::endl;
+        std::cout << "   Attack Bonus: +" << equippedWeapon->getAttackBonus() << std::endl;
+    } else {
+        std::cout << "Weapon: None (Fists)" << std::endl;
+    }
+
     GameUtils::Console::resetColor();
 }
 
